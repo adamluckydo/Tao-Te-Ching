@@ -22,24 +22,24 @@
       font-family: Georgia, 'Times New Roman', serif;
       background: #1a1a1a;
       color: #e8e4dc;
+      overflow: hidden;
     }
     
     .container {
-      min-height: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      padding: 1.5rem;
-      padding-top: env(safe-area-inset-top, 1.5rem);
-      padding-bottom: env(safe-area-inset-bottom, 1.5rem);
       max-width: 600px;
       margin: 0 auto;
     }
     
     header {
+      flex-shrink: 0;
       text-align: center;
-      padding-bottom: 1rem;
+      padding: 1.5rem 1.5rem 1rem 1.5rem;
+      padding-top: calc(env(safe-area-inset-top, 0px) + 1.5rem);
       border-bottom: 1px solid #333;
-      margin-bottom: 1.5rem;
+      background: #1a1a1a;
     }
     
     .verse-number {
@@ -54,17 +54,19 @@
       font-size: 1.2rem;
       line-height: 1.8;
       white-space: pre-line;
-      padding: 1rem 0;
+      padding: 1.5rem;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
     
     nav {
+      flex-shrink: 0;
       display: flex;
       gap: 0.75rem;
-      padding-top: 1.5rem;
+      padding: 1rem 1.5rem 1.5rem 1.5rem;
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
       border-top: 1px solid #333;
-      margin-top: auto;
+      background: #1a1a1a;
     }
     
     button {
@@ -216,6 +218,7 @@
       currentIndex = index;
       numberEl.textContent = index + 1;
       textEl.textContent = verses[index];
+      textEl.scrollTop = 0;
       prevBtn.disabled = index === 0;
       nextBtn.disabled = index === verses.length - 1;
       localStorage.setItem('tao-verse', index);
@@ -242,9 +245,8 @@
     const saved = localStorage.getItem('tao-verse');
     showVerse(saved ? parseInt(saved) : 0);
 
-    // Register service worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
+      navigator.serviceWorker.register('./sw.js');
     }
   </script>
 </body>
