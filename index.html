@@ -242,8 +242,7 @@
       if (e.key === ' ' || e.key === 'r') { e.preventDefault(); randomVerse(); }
     });
 
-    const saved = localStorage.getItem('tao-verse');
-    showVerse(saved ? parseInt(saved) : 0);
+    showVerse(Math.floor(Math.random() * verses.length));
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');
