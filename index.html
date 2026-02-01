@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Tao Te Ching">
   <meta name="theme-color" content="#1a1a1a">
-  <title>Tao Te Ching — Red Pine</title>
+  <title>Tao Te Ching — A Practical Synthesis</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
   <style>
@@ -16,7 +16,7 @@
       margin: 0;
       padding: 0;
     }
-    
+
     html, body {
       height: 100%;
       font-family: Georgia, 'Times New Roman', serif;
@@ -24,7 +24,7 @@
       color: #e8e4dc;
       overflow: hidden;
     }
-    
+
     .container {
       height: 100%;
       display: flex;
@@ -32,7 +32,7 @@
       max-width: 600px;
       margin: 0 auto;
     }
-    
+
     header {
       flex-shrink: 0;
       text-align: center;
@@ -41,15 +41,15 @@
       border-bottom: 1px solid #333;
       background: #1a1a1a;
     }
-    
-    .verse-number {
+
+    .header-text {
       font-size: 0.9rem;
       color: #888;
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
-    
-    .verse-text {
+
+    .content {
       flex: 1;
       font-size: 1.2rem;
       line-height: 1.8;
@@ -58,52 +58,212 @@
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
-    
+
+    /* Introduction page styling */
+    .intro {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+    }
+
+    .intro h1 {
+      font-size: 1.8rem;
+      font-weight: normal;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .intro .subtitle {
+      font-size: 1.1rem;
+      color: #888;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    .intro .author {
+      font-size: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .intro .description {
+      font-size: 0.95rem;
+      color: #888;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
     nav {
       flex-shrink: 0;
       display: flex;
-      gap: 0.75rem;
+      justify-content: center;
+      gap: 0.5rem;
       padding: 1rem 1.5rem 1.5rem 1.5rem;
       padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
       border-top: 1px solid #333;
       background: #1a1a1a;
     }
-    
+
     button {
-      flex: 1;
-      padding: 1rem;
-      font-size: 1rem;
+      width: 3.2rem;
+      height: 3.2rem;
+      padding: 0;
+      font-size: 1.4rem;
       font-family: inherit;
       background: #2a2a2a;
       color: #e8e4dc;
       border: 1px solid #444;
-      border-radius: 8px;
+      border-radius: 50%;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, opacity 0.2s;
       -webkit-tap-highlight-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    
+
     button:hover, button:active {
       background: #3a3a3a;
     }
-    
+
     button:disabled {
-      opacity: 0.4;
+      opacity: 0.3;
       cursor: not-allowed;
     }
-    
-    .random {
-      background: #2d3a2d;
-      border-color: #4a5a4a;
+
+    button svg {
+      width: 1.3rem;
+      height: 1.3rem;
+      fill: currentColor;
     }
-    
-    .random:hover, .random:active {
-      background: #3d4a3d;
+
+    /* Settings Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 1.5rem;
+      max-width: 340px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal h2 {
+      font-size: 1.1rem;
+      font-weight: normal;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    .modal-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .modal-section h3 {
+      font-size: 0.85rem;
+      font-weight: normal;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 0.6rem 0;
+      cursor: pointer;
+    }
+
+    .option input[type="radio"] {
+      appearance: none;
+      width: 1.1rem;
+      height: 1.1rem;
+      border: 2px solid #666;
+      border-radius: 50%;
+      margin-right: 0.75rem;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .option input[type="radio"]:checked {
+      border-color: #8a9a8a;
+    }
+
+    .option input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0.5rem;
+      height: 0.5rem;
+      background: #8a9a8a;
+      border-radius: 50%;
+    }
+
+    .option label {
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .modal-close {
+      display: block;
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #3a3a3a;
+      color: #e8e4dc;
+      border: 1px solid #555;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      background: #4a4a4a;
     }
 
     @media (max-width: 400px) {
-      .verse-text {
+      .content {
         font-size: 1.1rem;
+      }
+
+      button {
+        width: 2.8rem;
+        height: 2.8rem;
+      }
+
+      button svg {
+        width: 1.1rem;
+        height: 1.1rem;
       }
     }
   </style>
@@ -111,17 +271,65 @@
 <body>
   <div class="container">
     <header>
-      <div class="verse-number">Verse <span id="number">1</span> of 81</div>
+      <div class="header-text" id="header">Introduction</div>
     </header>
-    <div class="verse-text" id="text"></div>
+    <div class="content" id="content"></div>
     <nav>
-      <button id="prev">← Prev</button>
-      <button id="random" class="random">Random</button>
-      <button id="next">Next →</button>
+      <button id="prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+      <button id="home" aria-label="Introduction">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </button>
+      <button id="random" aria-label="Random verse">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18zm0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9z"/></svg>
+      </button>
+      <button id="settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </button>
+      <button id="next" aria-label="Next">
+        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </button>
     </nav>
   </div>
 
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h2>Settings</h2>
+      <div class="modal-section">
+        <h3>On Startup</h3>
+        <div class="option">
+          <input type="radio" name="startup" id="startup-intro" value="intro">
+          <label for="startup-intro">Open to Introduction</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="startup" id="startup-first" value="first">
+          <label for="startup-first">Open to Verse 1</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="startup" id="startup-random" value="random">
+          <label for="startup-random">Open to random verse</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="startup" id="startup-saved" value="saved">
+          <label for="startup-saved">Remember last verse</label>
+        </div>
+      </div>
+      <button class="modal-close" id="modal-close">Done</button>
+    </div>
+  </div>
+
   <script>
+    const introContent = {
+      html: `<div class="intro">
+        <h1>Tao Te Ching</h1>
+        <div class="subtitle">A Practical Synthesis</div>
+        <div class="author">by Adam Luck</div>
+        <div class="description">A rendering embodied for the western practitioner<br><br>With reference to translations by<br>Gia-Fu Feng, Sam Hamill, and Red Pine</div>
+      </div>`
+    };
+
     const verses = [
       "The way that becomes a way\nis not the Immortal Way.\nThe name that becomes a name\nis not the Immortal Name.\n\nThe nameless is the beginning of Heaven and Earth.\nThe named is the mother of the ten thousand things.\n\nDesireless, one sees the mystery.\nDesiring, one sees the manifestations.\n\nTwo different names\nfor the same source.\n\nThe one we call Dark\nThe Dark beyond Dark\nThe door to all beginnings.",
       "If that becomes beautiful\nthis becomes ugly.\nIf that becomes good\nthis becomes evil.\n\nHaving produces not having\nHard creates easy\nLong defines short\nHigh requires low\nNote contrasts noise\nAfter follows before.\n\nThus the sage acts without effort\nand teaches without words.\n\nThe ten thousand things arise endlessly.\nHe doesn't start the things he begins.\nHe doesn't presume when he acts.\nHe doesn't claim what he achieves.\nAnd because he makes no claim\nhe suffers no loss.",
@@ -206,21 +414,38 @@
       "True words aren't beautiful.\nBeautiful words aren't true.\n\nThe good aren't eloquent.\nThe eloquent aren't good.\n\nThe wise aren't learned.\nThe learned aren't wise.\n\nThe sage accumulates nothing,\nbut the more he does for others,\nthe greater his existence.\nThe more he gives to others,\nthe greater his abundance.\n\nThe Way of Heaven\nis to help without harming.\nThe Way of the Sage\nis to act without contending."
     ];
 
+    // -1 = intro, 0-80 = verses 1-81
+    let currentIndex = -1;
 
-    let currentIndex = 0;
-
-    const numberEl = document.getElementById('number');
-    const textEl = document.getElementById('text');
+    const headerEl = document.getElementById('header');
+    const contentEl = document.getElementById('content');
     const prevBtn = document.getElementById('prev');
     const nextBtn = document.getElementById('next');
+    const homeBtn = document.getElementById('home');
     const randomBtn = document.getElementById('random');
+    const settingsBtn = document.getElementById('settings');
+    const modal = document.getElementById('modal');
+    const modalClose = document.getElementById('modal-close');
 
-    function showVerse(index) {
+    function showPage(index) {
       currentIndex = index;
-      numberEl.textContent = index + 1;
-      textEl.textContent = verses[index];
-      textEl.scrollTop = 0;
-      prevBtn.disabled = index === 0;
+      contentEl.scrollTop = 0;
+
+      if (index === -1) {
+        // Introduction page
+        headerEl.textContent = 'Introduction';
+        contentEl.innerHTML = introContent.html;
+        prevBtn.disabled = true;
+        homeBtn.disabled = true;
+      } else {
+        // Verse page
+        headerEl.textContent = `Verse ${index + 1} of 81`;
+        contentEl.innerHTML = '';
+        contentEl.textContent = verses[index];
+        prevBtn.disabled = false;
+        homeBtn.disabled = false;
+      }
+
       nextBtn.disabled = index === verses.length - 1;
       localStorage.setItem('tao-verse', index);
     }
@@ -230,20 +455,81 @@
       do {
         newIndex = Math.floor(Math.random() * verses.length);
       } while (newIndex === currentIndex && verses.length > 1);
-      showVerse(newIndex);
+      showPage(newIndex);
     }
 
-    prevBtn.addEventListener('click', () => showVerse(currentIndex - 1));
-    nextBtn.addEventListener('click', () => showVerse(currentIndex + 1));
-    randomBtn.addEventListener('click', randomVerse);
+    function goHome() {
+      showPage(-1);
+    }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft' && currentIndex > 0) showVerse(currentIndex - 1);
-      if (e.key === 'ArrowRight' && currentIndex < verses.length - 1) showVerse(currentIndex + 1);
-      if (e.key === ' ' || e.key === 'r') { e.preventDefault(); randomVerse(); }
+    function openSettings() {
+      // Load current setting
+      const startup = localStorage.getItem('tao-startup') || 'random';
+      document.querySelector(`input[name="startup"][value="${startup}"]`).checked = true;
+      modal.classList.add('active');
+    }
+
+    function closeSettings() {
+      // Save setting
+      const startup = document.querySelector('input[name="startup"]:checked').value;
+      localStorage.setItem('tao-startup', startup);
+      modal.classList.remove('active');
+    }
+
+    // Event listeners
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > -1) showPage(currentIndex - 1);
+    });
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < verses.length - 1) showPage(currentIndex + 1);
+    });
+    homeBtn.addEventListener('click', goHome);
+    randomBtn.addEventListener('click', randomVerse);
+    settingsBtn.addEventListener('click', openSettings);
+    modalClose.addEventListener('click', closeSettings);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeSettings();
     });
 
-    showVerse(Math.floor(Math.random() * verses.length));
+    document.addEventListener('keydown', (e) => {
+      if (modal.classList.contains('active')) {
+        if (e.key === 'Escape') closeSettings();
+        return;
+      }
+      if (e.key === 'ArrowLeft' && currentIndex > -1) showPage(currentIndex - 1);
+      if (e.key === 'ArrowRight' && currentIndex < verses.length - 1) showPage(currentIndex + 1);
+      if (e.key === ' ' || e.key === 'r') { e.preventDefault(); randomVerse(); }
+      if (e.key === 'h') goHome();
+      if (e.key === 's') openSettings();
+    });
+
+    // Startup logic
+    function init() {
+      const startup = localStorage.getItem('tao-startup') || 'random';
+      const saved = parseInt(localStorage.getItem('tao-verse'), 10);
+
+      switch (startup) {
+        case 'intro':
+          showPage(-1);
+          break;
+        case 'first':
+          showPage(0);
+          break;
+        case 'saved':
+          if (!isNaN(saved) && saved >= -1 && saved < verses.length) {
+            showPage(saved);
+          } else {
+            showPage(-1);
+          }
+          break;
+        case 'random':
+        default:
+          randomVerse();
+          break;
+      }
+    }
+
+    init();
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');
