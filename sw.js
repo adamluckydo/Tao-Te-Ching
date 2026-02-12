@@ -1,7 +1,8 @@
-const CACHE_NAME = 'tao-v1';
+const CACHE_NAME = 'tao-v2';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/verses.js',
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png'
