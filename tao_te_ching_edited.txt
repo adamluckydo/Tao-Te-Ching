@@ -344,7 +344,7 @@ What nonsense!
 People joyfully feast
 as if they were at the Great Sacrifice,
 or climbing a tower
-to look from the terrace in spring.
+to look from a terrace in spring.
 
 I sit here and make no sign,
 like a baby that doesn't smile,
@@ -520,13 +520,13 @@ This is called peering into the mystery.
 Verse 28
 Know the male,
 but keep to the female,
-and be a stream for the world.
-Being a stream for the world,
+and be a river for the world.
+Being a river for the world,
 you will be led by ancient virtue
 and be born anew.
 
 Know the pure,
-but keep to the defiled,
+but keep to the impure,
 and be an example for the world.
 Being an example for the world,
 you will be filled with ancient virtue
@@ -540,7 +540,7 @@ you will keep the ancient virtue
 and return to the uncarved block.
 
 The uncarved block can be split to make tools.
-The sage can be put to work as chief official.
+The sage can work as a state official.
 But a master tailor doesn't cut.
 
 
@@ -805,8 +805,8 @@ The quickest path seems slow.
 The smoothest path seems rough.
 The highest virtue seems low.
 The whitest white seems pitch black.
-The greatest virtue seems insufficient.
-The staunchest virtue seems uncaring.
+The greatest virtue seems lacking.
+The staunchest virtue seems apathetic.
 The truest truth seems unsure.
 The perfect square has no corners.
 The perfect vessel is incomplete.
@@ -871,8 +871,8 @@ and thus lives long.
 
 
 Verse 45
-The greatest thing appears imperfect,
-yet it never wears out.
+Great accomplishment seems incomplete,
+yet it works without fail.
 The fullest thing seems empty,
 yet it cannot be exhausted.
 
@@ -889,7 +889,7 @@ is able to rule the world.
 Verse 46
 When the Tao prevails,
 swift horses are used to manure fields.
-When the Tao does not prevail,
+When the Tao is lost,
 war horses are raised on the border.
 
 No crime is worse than yielding to desire.
@@ -993,12 +993,12 @@ One who knows the children
 keeps the mother safe
 and lives without trouble.
 
-One who blocks the opening,
-one who closes the gate,
-lives without toil.
-One who unblocks the opening,
-one who meddles in affairs,
-lives without hope.
+One who blocks the opening
+One who closes the gate
+Lives without toil.
+One who unblocks the opening
+One who meddles in affairs
+Lives without hope.
 
 One who sees the small has vision.
 One who abides in softness has strength.
@@ -1015,12 +1015,12 @@ and my only fear would be to go astray.
 The Great Way is smooth,
 but people love the scenic route.
 
-The palaces are empty.
-The fields are overgrown
+The palaces are empty,
+the fields are overgrown
 and the granaries are bare.
-They wear fine clothes.
-They carry sharp swords.
-They indulge in food and drink
+They wear fine clothes,
+they carry sharp swords,
+they indulge in food and drink
 and possess more than they need.
 This is called robbery,
 and robbery is not the Way.
@@ -1119,7 +1119,7 @@ Thus the sage declares:
 I change nothing
 and the people transform themselves.
 I stay still
-and the people correct themselves.
+and the people align themselves.
 I do nothing
 and the people enrich themselves.
 I want nothing
@@ -1202,8 +1202,8 @@ the greater must be lower.
 
 Verse 62
 The Tao is the source of the ten thousand things.
-The treasure of the good,
-and refuge of the bad.
+The treasure of the good
+The refuge of the bad.
 
 Beautiful words can be traded.
 Noble deeds can be gifted.
@@ -1218,7 +1218,7 @@ and offers up the Tao.
 Why did the ancients treasure it?
 Did they not say:
 "Who seeks shall thereby find;
-who errs shall be forgiven"?
+who errs shall thereby be forgiven"?
 Thus the world treasures it.
 
 
@@ -1245,15 +1245,15 @@ He thus finds nothing hard.
 
 Verse 64
 It's easy to rule while it's peaceful.
-It's easy to prevent before there's trouble.
+It's easy to prevent before it's trouble.
 It's easy to break while it's fragile.
 It's easy to disperse while it's small.
 
 Act before it exists.
 Rule before it rebels.
 
-A giant tree grows from the tiniest shoot.
-A great tower rises from a basket of dirt.
+A great tree grows from the tiniest shoot.
+A giant tower rises from a basket of dirt.
 A thousand-mile journey begins at your feet.
 
 To act is to fail.
@@ -1301,7 +1301,7 @@ because it lies below them.
 
 Thus if the sage would be above the people,
 he should speak as if he were below them.
-If he would stand before them,
+If he would stand in front of them,
 he should act as if he were behind them.
 Thus when the sage is above,
 the people are not oppressed.
@@ -1521,7 +1521,7 @@ Thus he chooses to hide his skill.
 Verse 78
 Nothing in the world is weaker than water.
 But against the hard and the strong,
-nothing excels it,
+nothing can beat it,
 for nothing can change it.
 
 The soft overcomes the hard.
@@ -1543,10 +1543,10 @@ In resolving a great dispute,
 some resentment is bound to remain.
 How can this be good?
 
-Thus the sage stays true to his word
+Thus the sage honors his word
 and makes no claim on others.
-Thus the virtuous oversee what they owe,
-and the virtueless oversee what they are owed.
+Thus the virtuous mind what they owe
+and the virtueless mind what they deserve.
 
 The Way of Heaven is impartial,
 but always helps the good.
@@ -1578,10 +1578,8 @@ without ever paying a visit.
 Verse 81
 True words aren't beautiful.
 Beautiful words aren't true.
-
 The good aren't eloquent.
 The eloquent aren't good.
-
 The wise aren't learned.
 The learned aren't wise.
 

@@ -49,6 +49,68 @@
       text-transform: uppercase;
     }
 
+    .header-text.tappable {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .header-text.tappable:hover {
+      color: #aaa;
+    }
+
+    /* Verse picker */
+    .verse-picker {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .verse-picker.active {
+      display: flex;
+    }
+
+    .verse-picker-inner {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      width: 240px;
+    }
+
+    .verse-picker-inner label {
+      display: block;
+      font-size: 0.85rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .verse-picker-inner input {
+      width: 5rem;
+      padding: 0.6rem;
+      font-size: 1.4rem;
+      font-family: inherit;
+      text-align: center;
+      background: #1a1a1a;
+      color: #e8e4dc;
+      border: 1px solid #555;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .verse-picker-inner input:focus {
+      border-color: #888;
+    }
+
     .content {
       flex: 1;
       font-size: 1.2rem;
@@ -98,12 +160,18 @@
     nav {
       flex-shrink: 0;
       display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 1rem 1.5rem 1.5rem 1.5rem;
-      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
+      justify-content: space-evenly;
+      align-items: center;
+      padding: 0.75rem 1rem 1rem 1rem;
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
       border-top: 1px solid #333;
       background: #1a1a1a;
+    }
+
+    .nav-divider {
+      width: 1px;
+      height: 1.5rem;
+      background: #333;
     }
 
     button {
@@ -112,10 +180,10 @@
       padding: 0;
       font-size: 1.4rem;
       font-family: inherit;
-      background: #2a2a2a;
+      background: transparent;
       color: #e8e4dc;
-      border: 1px solid #444;
-      border-radius: 50%;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
       transition: background 0.2s, opacity 0.2s;
       -webkit-tap-highlight-color: transparent;
@@ -125,7 +193,7 @@
     }
 
     button:hover, button:active {
-      background: #3a3a3a;
+      background: #2a2a2a;
     }
 
     button:disabled {
@@ -278,6 +346,7 @@
       <button id="prev" aria-label="Previous">
         <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
       </button>
+      <div class="nav-divider"></div>
       <button id="home" aria-label="Introduction">
         <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       </button>
@@ -287,6 +356,7 @@
       <button id="settings" aria-label="Settings">
         <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
       </button>
+      <div class="nav-divider"></div>
       <button id="next" aria-label="Next">
         <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
       </button>
@@ -320,6 +390,14 @@
     </div>
   </div>
 
+  <!-- Verse Picker -->
+  <div class="verse-picker" id="versePicker">
+    <div class="verse-picker-inner">
+      <label for="verseInput">Go to verse</label>
+      <input type="number" id="verseInput" min="1" max="81" placeholder="1–81">
+    </div>
+  </div>
+
   <script>
     const introContent = {
       html: `<div class="intro">
@@ -331,87 +409,1356 @@
     };
 
     const verses = [
-      "The way that becomes a way\nis not the Immortal Way.\nThe name that becomes a name\nis not the Immortal Name.\n\nThe nameless is the beginning of Heaven and Earth.\nThe named is the mother of the ten thousand things.\n\nDesireless, one sees the mystery.\nDesiring, one sees the manifestations.\n\nTwo different names\nfor the same source.\n\nThe one we call Dark\nThe Dark beyond Dark\nThe door to all beginnings.",
-      "If that becomes beautiful\nthis becomes ugly.\nIf that becomes good\nthis becomes evil.\n\nHaving produces not having\nHard creates easy\nLong defines short\nHigh requires low\nNote contrasts noise\nAfter follows before.\n\nThus the sage acts without effort\nand teaches without words.\n\nThe ten thousand things arise endlessly.\nHe doesn't start the things he begins.\nHe doesn't presume when he acts.\nHe doesn't claim what he achieves.\nAnd because he makes no claim\nhe suffers no loss.",
-      "Bestowing no honors\nkeeps people from fighting.\nPrizing no treasures\nkeeps people from stealing.\nDisplaying no temptation\nkeeps people from acting up.\n\nThe sage rules by emptying the mind and filling the stomach\nWeakening the will and strengthening the bones.\n\nBy keeping the people from knowing or wanting\nand keeping the people who know from acting\nhe thus rules them all.",
-      "The Tao is empty.\nUsed, but never exhausted.\nBottomless, like the ancestor of us all.\n\nDulling our edges\nUntying our knots\nSoftening our light\nJoining our dust.\n\nSo deep, yet ever present.\nI wonder whose child it is.\nIt is older than God.",
-      "Heaven and Earth are impartial,\ntreating the ten thousand things like straw dogs.\nImpartial is the sage,\ntreating people like straw dogs.\n\nBetween Heaven and Earth\nis a space like a bellows.\nEmpty yet inexhaustible,\neach movement produces more.\nTalking only wastes it.\nKeep it inside.",
-      "The Valley Spirit that doesn't die\nwe call the Dark Womb.\nThe Dark Womb's mouth\nwe call the source of creation.\n\nIt is like a veil, barely seen.\nAnd yet we can't exhaust it.",
-      "Heaven is eternal and Earth is immortal.\nThe reason they're eternal and immortal\nis because they don't live for themselves.\nHence they can live forever.\n\nThe sage stays back\nbut ends up in front.\nHe lets himself go\nbut ends up safely held.\nSelflessness must be the reason\nthat whatever he seeks he finds.",
-      "The best are like water.\nNurturing the ten thousand things without trying to\nFlowing in places that others avoid\nAnd so they are like the Tao.\n\nDwelling with earth\nCultivating with depth\nRelating with kindness\nSpeaking with truth\nRuling with peace\nWorking with skill\nActing with awareness.\n\nAnd because they don't contend\nthey are free of blame.",
-      "Instead of pouring in more,\nbetter to stop short.\nSharpen the blade\nand it won't last long.\nHouses full of treasure\ncan never be safe.\nThe vanity of success\ninvites its own failure.\n\nRetire when your work is done.\nThat is the Way of Heaven.",
-      "Can you hold fast your crescent soul and not let it wander?\n\nCan you make your breath as soft as a baby's?\n\nCan you wipe your Dark Mirror free of dust?\n\nCan you serve and rule without effort?\n\nCan you become the female,\nopening and closing Heaven's Gate?\n\nCan you open to everything,\nunderstanding without knowing?\n\nGive birth and nurture.\nCreate without possessing.\nAct without expecting.\nRule without controlling.\nThis is called Dark Virtue.",
-      "Thirty spokes converge at the hub,\nbut it's the center hole that makes the wheel turn.\n\nClay is shaped to make a pot,\nbut it's the space inside that makes it useful.\n\nWindows and doors are carved for a room,\nbut it's the holes that make a house livable.\n\nExistence makes it possible,\nbut nonexistence makes it work.",
-      "The five colors blind the eye.\nThe five tones deafen the ear.\nThe five flavors numb the tongue.\nRiding and hunting disturb the mind.\nPrecious things lead us to wrongdoing.\n\nThus the sage puts the stomach ahead of the eyes.\nThus he picks this over that.",
-      "Favor and disgrace are like warnings.\nHonor and disaster are like the body.\n\nWhy are favor and disgrace like warnings?\nTo seek favor is to stand beneath.\nTo gain it is like a warning.\nTo lose it is like a warning.\nThus are favor and disgrace like warnings.\n\nWhy are honor and disaster like the body?\nThe reason we have disaster\nis because we have a body.\nIf we didn't have a body\nwe wouldn't have disaster.\n\nOne who loves himself without seeking favor\ncan be entrusted with the world.\nOne who loves his body without fearing disaster\ncan truly care for the world.",
-      "We look but don't see it\nand call it invisible.\nWe listen but don't hear it\nand call it inaudible.\nWe reach but don't grasp it\nand call it intangible.\nThree failed means to knowledge\nI weave into one.\n\nNot lit from above,\ncasting no shade below.\nToo fine to be named,\nit returns to nothing.\nThis is the formless form,\nthe immaterial image.\nIt is indefinable.\n\nMeeting it, you cannot see its face.\nFollowing it, you cannot see its back.\nHold to the ancient Way\nto rule this very realm\nand discover what has always been true.\n\nThis is the essence of the Tao.",
-      "The ancient masters sought the unfathomable\nand penetrated the dark.\nBecause they cannot be known,\nI describe them with reluctance.\n\nThey were careful as if crossing a river in winter\nCautious as if danger were nearby\nReserved like a visiting guest\nYielding like melting ice\nSimple like uncarved wood\nOpen like a valley\nMurky like a puddle.\n\nBut a puddle becomes clear when it's still.\nAnd out of stillness, life is roused.\n\nThose who treasure this Way\ndon't seek fulfillment.\nNot seeking fulfillment,\nthey reside in the dark.",
-      "Let everything be empty,\nand the center be still.\nThe ten thousand things rise and fall,\nand we watch them return.\nThey grow and flourish,\nreturning to the source.\n\nReturning to the source is stillness.\nTo be still is to revive.\nTo revive is to endure.\n\nKnowing this cycle is wisdom.\nNot knowing is to suffer in vain.\n\nKnowing how to endure is to be all-embracing.\nAll-embracing means impartial.\nImpartiality leads to nobility.\nNobility leads to Heaven.\nHeaven leads to the Tao.\n\nBeing at one with the Tao means long life.\nLife without trouble.",
-      "The greatest rulers are barely known.\nThe next best are loved and revered.\nThen come those who are feared and respected.\nAnd finally, those who are despised.\n\nOne who does not trust others\nwill not be trusted.\n\nHesitate and guard your words.\nWhen their work succeeds,\npeople will think they did it.",
-      "When the great Tao is forgotten,\ngoodness and justice appear.\nWhen reason appears,\nthe great pretense begins.\n\nWhen kinship falls into discord,\nfilial piety and devotion arise.\nWhen the country is in chaos,\nloyal officials appear.",
-      "Get rid of holiness and wisdom\nand people will live a hundred times better.\nGet rid of kindness and justice\nand people recover piety and devotion.\nGet rid of cleverness and profit\nand thieves will cease to exist.\n\nBut these three sayings are not enough.\nHence let this be added:\nWear the undyed and hold the uncarved.\nAbolish self-interest and cast off desire.\nGet rid of learning and problems will vanish.",
-      "Yes and no\naren't so far apart.\nBeautiful and ugly\naren't so unalike.\nWhat others fear\nwe too must fear.\nWhat nonsense!\n\nPeople joyfully feast\nas if they were at the Great Sacrifice,\nor climbing a tower\nto look from the terrace in spring.\n\nI sit here and make no sign,\nlike a baby that doesn't smile,\nlost with no one to turn to.\n\nOthers have plenty,\nI alone have nothing.\nMy mind is so foolish,\nso simple.\nOthers are clear and bright,\nI alone am dim.\nOthers are sharp and clever,\nI alone am confused.\n\nI drift like the waves of the sea,\nblowing aimlessly like the wind.\n\nEveryone has a purpose.\nI alone am directionless and dumb.\nFor I alone choose to differ.\nI drink from the Great Mother's breast.",
-      "The expression of deepest virtue\ncomes from the Tao alone.\n\nThe Tao in action\nwaxes and wanes.\nIt waxes and wanes\nbut inside is an image.\nIt wanes and waxes\nbut inside is a form.\nIt's deep and dark\nbut inside is an essence.\nAn essence that is true and real\nand inside that lies faith.\n\nFrom the very beginning until now\nits name has never changed.\nSo we might follow our fathers.\n\nHow do we know what our fathers were like?\nThrough this.",
-      "Partial means whole.\nCrooked means straight.\nHollow means full.\nWorn-out means new.\nLess means content.\nMore means confused.\nThus the sage holds onto the One\nto use in guiding the world.\n\nNot watching himself,\nhe appears.\nNot displaying himself,\nhe flourishes.\nNot flattering himself,\nhe succeeds.\nNot parading himself,\nhe leads.\nBecause he doesn't compete,\nno one can compete against him.\n\nThe ancients who said partial means whole\ncame close indeed.\nBecoming whole depends on this.",
-      "To talk little is natural.\nA gale doesn't last all morning.\nA squall doesn't last all day.\nWho else could make these?\nOnly Heaven and Earth.\nIf Heaven and Earth can't make things last,\nwhat about man?\n\nThus in whatever you do,\nlet those on the Way be one with the Way.\nLet those who succeed be one with success.\nLet those who fail be one with failure.\n\nBe one with success,\nfor the Way succeeds too.\nBe one with failure,\nfor the Way fails too.",
-      "Who tiptoes doesn't stand.\nWho strides doesn't walk.\nWho watches himself doesn't appear.\nWho displays himself doesn't flourish.\nWho flatters himself doesn't succeed.\nWho parades himself doesn't lead.\n\nOn the road they say:\nToo much food and a tiring pace\ndo not bring happiness.\nTherefore followers of the Tao avoid them.",
-      "Something featureless yet complete,\nborn before Heaven and Earth.\nSilent and formless,\nit stands alone and unchanging.\nNot knowing its name\nI call it the Tao.\nForced to name it\nI call it great.\n\nGreat means boundless.\nBoundless means ever-flowing.\nEver-flowing means ever-returning.\n\nThe Tao is great.\nHeaven is great.\nEarth is great.\nThe king is also great.\nThe realm consists of four greats,\nand the king is one of them.\n\nMan follows Earth.\nEarth follows Heaven.\nHeaven follows the Tao.\nThe Tao follows itself.",
-      "Heavy is the root of light.\nStill is the master of busy.\n\nTherefore the sage might travel all day\nwithout leaving his heavy baggage cart.\nEven when surrounded by activity\nhe remains still and detached.\n\nWhy would the lord of ten thousand chariots\ntreat himself more lightly than his kingdom?\nIf he treats himself lightly\nhe will lose touch with his root.\nIf he becomes too busy\nhe will lose his mastery.",
-      "Good walking leaves no tracks.\nGood talking reveals no flaws.\nGood accounting needs no beads.\nGood doors need no locks,\nyet can't be opened.\nGood binding ties no knots,\nyet can't be undone.\n\nThus the sage is good at saving people,\nyet abandons no one,\nnor anything of use.\nThis is called following the light.\n\nThus the good are teachers of the bad.\nThe bad are students of the good.\nNot honoring their teachers,\nnot cherishing their students,\nthe wise alone are perfectly blind.\nThis is called peering into the mystery.",
-      "Know the male,\nbut keep to the female,\nand be a stream for the world.\nBeing a stream for the world,\nyou will be led by ancient virtue\nand be born anew.\n\nKnow the pure,\nbut keep to the defiled,\nand be an example for the world.\nBeing an example for the world,\nyou will be filled with ancient virtue\nand return to boundless freedom.\n\nKnow the white,\nbut keep to the black,\nand be a guide for the world.\nBeing a guide for the world,\nyou will keep the ancient virtue\nand return to the uncarved block.\n\nThe uncarved block can be split to make tools.\nThe sage can be put to work as chief official.\nBut a master tailor doesn't cut.",
-      "Trying to control the world using force?\nI see this not succeeding.\n\nThe world is sacred.\nIt can't be controlled.\nTo control it is to ruin it.\nTo grasp it is to lose it.\n\nSometimes leading,\nsometimes following.\nSometimes breathing hard,\nsometimes breathing easily.\nSometimes strong,\nsometimes weak.\nSometimes expanding,\nsometimes collapsing.\n\nThus the sage avoids extremes,\navoids excess,\navoids extravagance.",
-      "In using the Tao to advise a ruler,\noppose the use of force to control.\nSuch methods soon rebound.\n\nWhere armies camp,\nbrambles grow.\nBest to win and then stop.\nNever take advantage of power.\n\nWin but don't be proud.\nWin but don't boast.\nWin but don't be cruel.\nWin when you have no choice.\nThis is called winning without force.\n\nForce leads to decay.\nThis isn't the Tao.\nWhat isn't the Tao ends early.",
-      "Weapons are not auspicious tools.\nAll creatures despise them.\nThus the Taoist shuns them.\nIn peace the ruler honors the left.\nIn war he honors the right.\n\nWeapons are not auspicious tools.\nThey are not a ruler's tools.\nWielded only when he has no choice.\nPeace and quiet serve best.\nThus he does not glorify weapons.\n\nOne who glorifies weapons\nenjoys killing others.\nOne who enjoys killing others\nachieves no worldly rule.\n\nThus we honor the left for joy\nand the right for sorrow.\nThe general stands on the left.\nThe commander on the right.\nThis means war is conducted like a funeral.\n\nWhen you kill another,\nhonor him with your tears.\nWhen the battle is won,\ntreat it as a wake.",
-      "The Tao has never had a name.\nThough simple and small,\nno one can command it.\n\nIf rulers could uphold it,\nthe ten thousand things would come together.\nHeaven and Earth would join\nto bestow sweet dew\nwithout anyone giving the order.\n\nOnce the world is divided,\nthe distinction gives us names.\nAfter we have names,\nwe should know when to stop.\nOne who knows when to stop\nknows no trouble.\nThe relationship of the world to the Tao\nis like rivers flowing into the sea.",
-      "Understanding others is wisdom.\nUnderstanding yourself is enlightenment.\nConquering others is forceful.\nConquering yourself is strong.\nSelf-contentment is wealth.\nSelf-control is success.\nHolding your place is enduring.\nDying without perishing is living.",
-      "The great Tao flows everywhere,\nto the left and to the right.\n\nThe ten thousand things are born from it,\nbut it makes no claim.\nWhen its work succeeds,\nit seeks no recognition.\n\nIt nourishes the ten thousand things\nwithout aspiring to rule.\nShall we call it small?\n\nThe ten thousand things return to it,\nbut it wields no control.\nShall we call it great?\n\nTherefore the sage never acts great.\nThus he achieves greatness.",
-      "Hold up the great image\nand the world will come\nand be beyond harm,\nresting safely at peace.\n\nMusic and fine food\nstop people passing by,\nbut words of the Tao\nare bland and tasteless.\n\nWe look and don't see it.\nWe listen and don't hear it.\nYet when we use it\nit is inexhaustible.",
-      "What you would shorten\nyou should therefore lengthen.\nWhat you would weaken\nyou should therefore strengthen.\nWhat you would topple\nyou should therefore raise.\nWhat you would take\nyou should therefore give.\nThis is called hiding the light.\nThe weak conquers the strong.\n\nFish can't survive out of the deep.\nA state's greatest advantage\nis not meant to be shown.",
-      "The Tao does nothing,\nbut leaves nothing undone.\nIf a ruler could uphold it,\nthe ten thousand things would change on their own.\n\nIf they still desired to act,\nhe could make them still\nwith simplicity that has no name.\n\nStilled by nameless simplicity,\nthey would not desire.\nNot desiring,\nthey would be at peace,\nand the world would fix itself.",
-      "A man of higher virtue does not insist upon his virtue.\nThus he is virtuous.\nA man of lower virtue never loses sight of his virtue.\nThus he is not virtuous.\n\nA man of higher virtue takes no action\nand has no thought of action.\nA man of higher kindness takes action\nbut has no thought of action.\nA man of higher justice takes action\nand has the thought of action.\nA man of higher ritual takes action\nbut gets no response\nuntil he threatens and compels them.\n\nWhen the Way is lost,\nvirtue appears.\nWhen virtue is lost,\nkindness appears.\nWhen kindness is lost,\njustice appears.\nWhen justice is lost,\nritual appears.\nRitual marks the ending of belief\nand the onset of confusion.\n\nDivination is the flower of the Way\nand the beginning of delusion.\nThus the great choose essence over appearance,\nthe fruit and not the flower.\nThus they pick this over that.",
-      "Of things that became one in the past:\nHeaven became one and was clear.\nEarth became one and was still.\nSpirits became one and were strong.\nValleys became one and were full of life.\nKings became one and were noble.\n\nBut in the limit:\nHeaven would shatter if it was always clear.\nEarth would crumble if it was always still.\nSpirits would break if they were always strong.\nValleys would fail if they were always full.\nKings would fall if they were always noble.\n\nThus the noble is based on the humble,\nas the high is founded on the low.\nThus do kings refer to themselves\nas orphaned, widowed, and destitute.\nIsn't this the basis of humility?\nThus they count many carriages\nwhile claiming none at all.\nNot wanting to tinkle like jade,\nthey clatter like rocks.",
-      "Returning is the motion of the Tao.\nYielding is the practice of the Tao.\nThe ten thousand things are born of being.\nBeing is born from nonbeing.",
-      "When a great person hears of the Way,\nhe follows it with devotion.\nWhen an average person hears of the Way,\nhe doesn't know if it's real or not.\nWhen a foolish person hears of the Way,\nhe laughs out loud.\nIf he didn't laugh,\nit wouldn't be the Way.\n\nTherefore these sayings arose:\nThe brightest path seems dark.\nThe quickest path seems slow.\nThe smoothest path seems rough.\nThe highest virtue seems low.\nThe whitest white seems pitch black.\nThe greatest virtue seems insufficient.\nThe staunchest virtue seems uncaring.\nThe truest truth seems unsure.\nThe perfect square has no corners.\nThe perfect vessel is incomplete.\nThe perfect sound is silent.\nThe perfect form is shapeless.\n\nThe Tao is hidden and has no name,\nbut because it's the Tao\nit knows how to start and how to finish.",
-      "The Tao gives birth to one.\nOne gives birth to two.\nTwo gives birth to three.\nThree gives birth to the ten thousand things.\n\nThe ten thousand things carry yin on their backs\nand hold yang in their embrace.\nHarmony is found in the breath between them.\n\nWhat the world hates\nis to be orphaned, widowed, and destitute,\nbut kings use these as their titles.\nThus some gain by losing\nand others lose by gaining.\n\nThus what other people teach\nI teach as well.\nThe tyrant doesn't die a natural death.\nThis becomes my teacher.",
-      "The softest thing in the world\novercomes the hardest.\nWhat doesn't exist finds room where there is none.\nThus we know the value of non-action.\n\nTeaching without words,\nsucceeding without effort—\nfew in the world can realize this.",
-      "Which matters more,\nfame or health?\nWhich is more precious,\nhealth or wealth?\nWhich is more harmful,\ngain or loss?\n\nThe deeper the love,\nthe higher the cost.\nThe bigger the treasure,\nthe greater the loss.\nHe who knows contentment\nsuffers no disgrace.\nHe who knows restraint\nencounters no trouble\nand thus lives long.",
-      "The greatest thing appears imperfect,\nyet it never wears out.\nThe fullest thing seems empty,\nyet it cannot be exhausted.\n\nThe straightest thing seems crooked.\nThe cleverest thing seems clumsy.\nThe richest thing seems poor.\n\nActivity conquers cold.\nStillness conquers heat.\nHe who can be perfectly still\nis able to rule the world.",
-      "When the Tao prevails,\nswift horses are used to manure fields.\nWhen the Tao does not prevail,\nwar horses are raised on the border.\n\nNo crime is worse than yielding to desire.\nNo disaster is greater than discontent.\nNo curse is crueler than getting what you want.\nTherefore being content with what you have\nis true contentment indeed.",
-      "Without going out the door,\none may know the whole world.\nWithout looking out the window,\none may know the Way of Heaven.\nThe farther people go,\nthe less they know.\n\nThus the sage knows without moving,\nnames without looking,\nsucceeds without trying.",
-      "Those who seek to learn gain every day.\nThose who seek the Way lose every day.\n\nThey lose and lose\nuntil they find nothing left to do.\nNothing to do means nothing undone.\n\nHe who rules the world isn't busy.\nIf someone is busy,\nhe can't rule the world.",
-      "The sage has no mind of his own.\nHis mind is the mind of the people.\n\nTo the good he is good.\nTo the bad he is good.\nThus is virtue attained.\nTo the true he is true.\nTo the false he is true.\nThus is honesty attained.\n\nThe sage is humble and withdrawn.\nTo the world he seems confusing.\nPeople open their eyes and ears to him,\nand he acts like a little child.",
-      "Appearing into life.\nDisappearing into death.\nThree in ten are followers of life.\nThree in ten are followers of death.\nAnd people living to live\nalso number three in ten\nand are led to the land of death.\nWhy is this so?\nBecause they cling to life.\n\nIt's said that those who guard life well\ndo not avoid rhinos or tigers\nand will not be injured in battle.\nFor rhinos have nowhere to thrust their horn,\ntigers have nowhere to sink their claws,\nand soldiers have nowhere to bury their blades.\nWhy is this so?\nBecause for them there is no land of death.",
-      "The Way begets them\nand virtue keeps them.\nMatter forms them\nand usage completes them.\nThus the ten thousand things honor the Way and glorify virtue.\nHonor of the Way and glory of virtue\nare not bestowed\nbut are always available.\n\nThe Way begets and keeps them,\ncultivates and trains them,\nshelters and protects them,\nnurtures and sustains them.\n\nCreate without possessing.\nAct without expecting.\nRule without controlling.\nThis is called Dark Virtue.",
-      "The ten thousand things have an origin\nthat may be called the world's mother.\nOne who knows the mother\nalso knows the children.\nOne who knows the children\nkeeps the mother safe\nand lives without trouble.\n\nOne who blocks the opening,\none who closes the gate,\nlives without toil.\nOne who unblocks the opening,\none who meddles in affairs,\nlives without hope.\n\nOne who sees the small has vision.\nOne who abides in softness has strength.\nOne who uses his light,\none who trusts his vision,\nlives without death.\nThis is called following eternity.",
-      "If I had the slightest sense\nI would follow the Great Way\nand my only fear would be to go astray.\nThe Great Way is smooth,\nbut people love the scenic route.\n\nThe palaces are empty.\nThe fields are overgrown\nand the granaries are bare.\nThey wear fine clothes.\nThey carry sharp swords.\nThey indulge in food and drink\nand possess more than they need.\nThis is called robbery,\nand robbery is not the Way.",
-      "What is firmly planted is not uprooted.\nWhat is held tight is not ripped away.\nFuture generations will honor it forever.\n\nCultivated in the self,\nvirtue becomes real.\nCultivated in the family,\nvirtue abounds.\nCultivated in the village,\nvirtue grows.\nCultivated in the state,\nvirtue prospers.\nCultivated in the world,\nvirtue prevails.\n\nTherefore view the self through the self.\nView the family through the family.\nView the village through the village.\nView the state through the state.\nView the world through the world.\n\nHow do we know what the world is like?\nThrough this.",
-      "He who embodies virtue\nis like a newborn child.\n\nWasps and scorpions won't sting him.\nSpiders and snakes won't bite him.\nBirds and beasts won't claw him.\n\nHis bones are weak.\nHis sinews are soft.\nAnd yet his grip is firm.\nHe hasn't known the union of sexes,\nand yet his penis is hard.\nHe is so full of essence\nthat he cries all day without becoming hoarse.\nHe is in perfect harmony.\n\nKnowing harmony is knowing eternity.\nKnowing eternity is called enlightenment.\n\nWho lengthens his life tempts luck.\nWho controls his breath uses force.\nForce leads to decay.\nThis isn't the Way.\nWhat isn't the Way ends early.",
-      "Those who know don't talk.\nThose who talk don't know.\n\nSeal the opening.\nClose the gate.\nDull the edge.\nUntie the knot.\nSoften the light.\nJoin the dust.\nThis is called Dark Virtue.\n\nIt can't be embraced.\nIt can't be abandoned.\nIt can't be helped.\nIt can't be harmed.\nIt can't be exalted.\nIt can't be debased.\nThus does the world honor it.",
-      "Use direction to rule a country.\nUse indirection to fight a war.\nUse inaction to rule the world.\nHow do I know this is so?\n\nThe greater the restrictions,\nthe poorer the people.\nThe sharper the weapons,\nthe darker the realm.\nThe smarter the scheme,\nthe stranger the outcome.\nThe finer the treasure,\nthe thicker the thieves.\n\nThus the sage declares:\nI change nothing\nand the people transform themselves.\nI stay still\nand the people correct themselves.\nI do nothing\nand the people enrich themselves.\nI want nothing\nand the people simplify themselves.",
-      "When the government does little,\nthe people are honest.\nWhen the government imposes,\nthe people are cunning.\n\nHappiness is rooted in misery.\nMisery lurks beneath happiness.\nWho knows where they end?\n\nThere is no direction.\nDirection turns into indirection.\nGoodness becomes evil.\nThe people have been deluded\nfor a long time.\n\nThus the sage is sharp but not cutting,\npointed but not piercing,\nstraightforward but not overextended,\nbright but not blinding.",
-      "In ruling people and serving Heaven,\nnothing surpasses austerity.\nAusterity means planning ahead.\nPlanning ahead means accumulating virtue.\nAccumulating virtue means overcoming everything.\nOvercoming everything means knowing no limits.\nKnowing no limits means ruling the kingdom.\nRuling the kingdom means living long.\nThis means deep roots and a thick trunk,\nthe Way of long and lasting life.",
-      "Ruling a great kingdom\nis like cooking a small fish.\n\nWhen you govern the world with the Tao,\nspirits display no powers.\nNot that they have no power,\nbut their powers do people no harm.\nNot that their powers can do people no harm,\nbut the sage protects them.\n\nNeither harms the other,\nso both accumulate virtue.",
-      "A great state is like a river basin.\nThe confluence of the world,\nembodying the female.\n\nThe female overcomes the male through stillness.\nIn order to be still,\nshe needs to lower herself.\n\nThus the great state that lowers itself\nrules the small state.\nThe small state that lowers itself\nis ruled by the great state.\nSome lower themselves to rule.\nSome lower themselves to be ruled.\n\nThe great state's only desire\nis to unite and lead others.\nThe small state's only desire\nis to join and serve others.\nFor both to achieve their desire,\nthe greater must be lower.",
-      "The Tao is the source of the ten thousand things.\nThe treasure of the good,\nand refuge of the bad.\n\nBeautiful words can be traded.\nNoble deeds can be gifted.\nHow can we abandon people who are bad?\nThus when emperors are enthroned\nor three ministers installed,\nthough there be great discs of jade\nfollowed by teams of horses,\nthey don't rival one who sits\nand offers up the Tao.\n\nWhy did the ancients treasure it?\nDid they not say:\n\"Who seeks shall thereby find;\nwho errs shall be forgiven\"?\nThus the world treasures it.",
-      "Act without acting.\nWork without working.\nTaste without tasting.\nThe great are small.\nThe many are few.\nRepay each wrong with virtue.\n\nPlan for the hard while it's easy.\nWork on the great while it's small.\nThe hardest task in the world begins easy.\nThe greatest goal in the world begins small.\nThus the sage never acts great.\nHe thus achieves great things.\n\nOne who promises often is seldom trusted.\nOne who makes things easy will encounter much hardship.\nTherefore the sage makes everything hard.\nHe thus finds nothing hard.",
-      "It's easy to rule while it's peaceful.\nIt's easy to prevent before there's trouble.\nIt's easy to break while it's fragile.\nIt's easy to disperse while it's small.\n\nAct before it exists.\nRule before it rebels.\n\nA giant tree grows from the tiniest shoot.\nA great tower rises from a basket of dirt.\nA thousand-mile journey begins at your feet.\n\nTo act is to fail.\nTo control is to lose.\nTherefore the sage doesn't act,\nthus he doesn't fail.\nHe doesn't control,\nthus he doesn't lose.\n\nIn pursuing a task,\npeople usually fail near the end.\nCaring at the end as at the start\nputs an end to failure.\n\nThus the sage desires no desire.\nHe doesn't prize what's hard to obtain.\nHe learns to not learn.\nHe attends to what others pass by.\nTo help the ten thousand things find their nature,\nhe thus dares not to act.",
-      "The ancient masters of the Way\ndid not use it to enlighten\nbut to keep people in the dark.\nWhat makes people hard to rule\nis that they have too much knowledge.\nOne who rules with knowledge\nspreads evil in the realm.\nOne who rules without knowledge\nspreads virtue in the realm.\nOne who understands these two\nunderstands the universal key.\nThis is called Dark Virtue.\nDark Virtue goes deep,\ngoes far,\ngoes the other way,\nuntil it reaches perfect harmony.",
-      "The sea can rule a hundred rivers\nbecause it lies below them.\n\nThus if the sage would be above the people,\nhe should speak as if he were below them.\nIf he would stand before them,\nhe should act as if he were behind them.\nThus when the sage is above,\nthe people are not oppressed.\nWhen he is in front,\nthe people are not hindered.\nThe world will support and encourage him without wearying.\n\nBecause he doesn't contend,\nno one can contend with him.",
-      "The world calls me great.\nGreat but useless.\nBecause I am great I am useless.\nIf I were of use,\nI would have stayed small.\n\nBut I possess three treasures\nthat I guard and cherish.\nThe first is compassion.\nThe second is austerity.\nThe third is reluctance to excel.\n\nBecause I am compassionate,\nI can be valiant.\nBecause I am austere,\nI can be extravagant.\nBecause I am reluctant to excel,\nI can be supreme.\n\nIf I renounced compassion for valor,\nausterity for extravagance,\nreluctance for supremacy,\nI would die.\n\nCompassion wins every battle\nand outlasts every attack.\nWhat Heaven creates,\ncompassion protects.",
-      "In ancient times:\nThe perfect officer wasn't armed.\nThe perfect warrior wasn't angry.\nThe perfect conqueror wasn't hostile.\nThe perfect commander was humble.\n\nThis is called the virtue of not contending.\nThis is called using the strength of others.\nThis is called uniting with Heaven,\nwhich was the ancient goal.",
-      "In warfare there is a saying:\nRather than a host,\nbetter to be a guest.\nRather than advance an inch,\nbetter to retreat a foot.\n\nThis means forming no column,\nwearing no armor,\nbrandishing no weapon,\nrepulsing no enemy.\n\nNo fate is worse than to make light of an enemy.\nMaking light of an enemy means losing a treasure.\nThus when opponents are evenly matched,\nthe remorseful one prevails.",
-      "My words are easy to understand,\neasy to employ.\nBut since no one can understand them,\nno one can employ them.\n\nWords have an ancestor.\nDeeds have an ancestor.\n\nBecause they have no understanding,\npeople fail to understand me.\nRare are they who understand me.\nThus I am exalted.\n\nTherefore the sage wears coarse cloth\nand keeps his jade inside.",
-      "To realize that you do not understand\nis transcendence.\nNot to realize that you do not understand\nis an affliction.\nThe reason the sage is not afflicted\nis because he treats affliction as affliction.\nHence he is not afflicted.",
-      "When people no longer fear power,\na greater power will appear.\n\nDon't restrict where people dwell.\nDon't repress how people live.\nIf they aren't oppressed,\nthey won't protest.\n\nThus the sage knows himself\nbut doesn't reveal himself.\nHe loves himself\nbut doesn't exalt himself.\nThus he picks this over that.",
-      "Daring to act means death.\nDaring not to act means life.\nOf these two,\none benefits,\none harms.\n\nWho knows the reason\nfor Heaven's dislikes?\nThe Way of Heaven\nwins easily without a fight,\nanswers wisely without a word,\ncomes quickly without a summons,\nplans ingeniously without a thought.\n\nThe Net of Heaven is all-embracing.\nIts mesh is wide but nothing escapes.",
-      "If people no longer fear death,\nwhy do we threaten to kill them?\n\nAnd if others fear death,\nand still act perverse,\nand we catch and kill them,\nwho else will dare?\n\nAs long as people fear death,\nthe executioner will exist.\nTo kill in the executioner's place\nis to take the carpenter's place.\nWho takes the carpenter's place\nis bound to hurt his hands.",
-      "The reason people are hungry\nis because those above levy so many taxes.\nThus the people are hungry.\n\nThe reason people are hard to rule\nis because those above are so forceful.\nThus the people are hard to rule.\n\nThe reason people think little of death\nis because those above think so much of life.\nThus the people think little of death.\n\nMeanwhile those who do not pursue life\nare more esteemed than those who love life.",
-      "When people are born,\nthey are soft and supple.\nWhen they perish,\nthey are hard and stiff.\nWhen plants shoot forth,\nthey are soft and tender.\nWhen they die,\nthey are withered and dry.\n\nThus it is said:\nThe hard and strong are followers of death.\nThe soft and weak are followers of life.\n\nWhen an army becomes strong it suffers defeat.\nWhen a plant becomes hard it snaps.\n\nThe hard and the strong dwell below.\nThe soft and the weak dwell above.",
-      "The Way of Heaven\nis like stringing a bow.\nPulling down the high,\nlifting up the low.\nShortening the long,\nlengthening the short.\n\nThe Way of Heaven\ntakes from the long\nand supplements the short.\nUnlike the way of man,\ntaking from the short\nand giving to the long.\n\nWho can find the long\nand give it to the world?\nOnly those who find the Way.\n\nThus the sage\nacts without expecting,\nachieves without claiming.\nThus he chooses to hide his skill.",
-      "Nothing in the world is weaker than water.\nBut against the hard and the strong,\nnothing excels it,\nfor nothing can change it.\n\nThe soft overcomes the hard.\nThe weak overcomes the strong.\n\nThis is something everyone knows,\nbut no one is able to practice.\n\nThus the sage declares:\nOne who accepts a country's disgrace\nwe call the lord of soil and grain.\nOne who accepts a country's misfortune\nwe call the king of all under Heaven.\nUpright words sound upside down.",
-      "In resolving a great dispute,\nsome resentment is bound to remain.\nHow can this be good?\n\nThus the sage stays true to his word\nand makes no claim on others.\nThus the virtuous oversee what they owe,\nand the virtueless oversee what they are owed.\n\nThe Way of Heaven is impartial,\nbut always helps the good.",
-      "Imagine a small state with few people.\nLet there be labor-saving tools,\nbut no need to use them.\nLet people consider death,\nbut not travel far.\nLet there be boats and carts,\nbut no reason to ride them.\nLet there be armor and weapons,\nbut no reason to employ them.\n\nLet people return to tying knots to keep records.\nSatisfied with their food,\npleased with their clothing,\ncontent with their homes,\nand happy with their customs.\n\nLet there be a state so near,\npeople can hear its dogs and chickens,\nbut live out their lives\nwithout ever paying a visit.",
-      "True words aren't beautiful.\nBeautiful words aren't true.\n\nThe good aren't eloquent.\nThe eloquent aren't good.\n\nThe wise aren't learned.\nThe learned aren't wise.\n\nThe sage accumulates nothing,\nbut the more he does for others,\nthe greater his existence.\nThe more he gives to others,\nthe greater his abundance.\n\nThe Way of Heaven\nis to help without harming.\nThe Way of the Sage\nis to act without contending."
+      "The way that becomes a way
+is not the Immortal Way.
+The name that becomes a name
+is not the Immortal Name.
+
+The nameless is the beginning of Heaven and Earth.
+The named is the mother of the ten thousand things.
+
+Desireless, one sees the mystery.
+Desiring, one sees the manifestations.
+
+Two different names
+for the same source.
+
+The one we call Dark
+The Dark beyond Dark
+The door to all beginnings.",
+      "If that becomes beautiful
+this becomes ugly.
+If that becomes good
+this becomes evil.
+
+Having produces not having
+Hard creates easy
+Long defines short
+High requires low
+Note contrasts noise
+After follows before.
+
+Thus the sage acts without effort
+and teaches without words.
+
+The ten thousand things arise endlessly.
+He doesn't start the things he begins.
+He doesn't presume when he acts.
+He doesn't claim what he achieves.
+And because he makes no claim
+he suffers no loss.",
+      "Bestowing no honors
+keeps people from fighting.
+Prizing no treasures
+keeps people from stealing.
+Displaying no temptation
+keeps people from acting up.
+
+The sage rules by emptying the mind and filling the stomach
+Weakening the will and strengthening the bones.
+
+By keeping the people from knowing or wanting
+and keeping the people who know from acting
+he thus rules them all.",
+      "The Tao is empty.
+Used, but never exhausted.
+Bottomless, like the ancestor of us all.
+
+Dulling our edges
+Untying our knots
+Softening our light
+Joining our dust.
+
+So deep, yet ever present.
+I wonder whose child it is.
+It is older than God.",
+      "Heaven and Earth are impartial,
+treating the ten thousand things like straw dogs.
+Impartial is the sage,
+treating people like straw dogs.
+
+Between Heaven and Earth
+is a space like a bellows.
+Empty yet inexhaustible,
+each movement produces more.
+Talking only wastes it.
+Keep it inside.",
+      "The Valley Spirit that doesn't die
+we call the Dark Womb.
+The Dark Womb's mouth
+we call the source of creation.
+
+It is like a veil, barely seen.
+And yet we can't exhaust it.",
+      "Heaven is eternal and Earth is immortal.
+The reason they're eternal and immortal
+is because they don't live for themselves.
+Hence they can live forever.
+
+The sage stays back
+but ends up in front.
+He lets himself go
+but ends up safely held.
+Selflessness must be the reason
+that whatever he seeks he finds.",
+      "The best are like water.
+Nurturing the ten thousand things without trying to
+Flowing in places that others avoid
+And so they are like the Tao.
+
+Dwelling with earth
+Cultivating with depth
+Relating with kindness
+Speaking with truth
+Ruling with peace
+Working with skill
+Acting with awareness.
+
+And because they don't contend
+they are free of blame.",
+      "Instead of pouring in more,
+better to stop short.
+Sharpen the blade
+and it won't last long.
+Houses full of treasure
+can never be safe.
+The vanity of success
+invites its own failure.
+
+Retire when your work is done.
+That is the Way of Heaven.",
+      "Can you hold fast your crescent soul and not let it wander?
+
+Can you make your breath as soft as a baby's?
+
+Can you wipe your Dark Mirror free of dust?
+
+Can you serve and rule without effort?
+
+Can you become the female,
+opening and closing Heaven's Gate?
+
+Can you open to everything,
+understanding without knowing?
+
+Give birth and nurture.
+Create without possessing.
+Act without expecting.
+Rule without controlling.
+This is called Dark Virtue.",
+      "Thirty spokes converge at the hub,
+but it's the center hole that makes the wheel turn.
+
+Clay is shaped to make a pot,
+but it's the space inside that makes it useful.
+
+Windows and doors are carved for a room,
+but it's the holes that make a house livable.
+
+Existence makes it possible,
+but nonexistence makes it work.",
+      "The five colors blind the eye.
+The five tones deafen the ear.
+The five flavors numb the tongue.
+Riding and hunting disturb the mind.
+Precious things lead us to wrongdoing.
+
+Thus the sage puts the stomach ahead of the eyes.
+Thus he picks this over that.",
+      "Favor and disgrace are like warnings.
+Honor and disaster are like the body.
+
+Why are favor and disgrace like warnings?
+To seek favor is to stand beneath.
+To gain it is like a warning.
+To lose it is like a warning.
+Thus are favor and disgrace like warnings.
+
+Why are honor and disaster like the body?
+The reason we have disaster
+is because we have a body.
+If we didn't have a body
+we wouldn't have disaster.
+
+One who loves himself without seeking favor
+can be entrusted with the world.
+One who loves his body without fearing disaster
+can truly care for the world.",
+      "We look but don't see it
+and call it invisible.
+We listen but don't hear it
+and call it inaudible.
+We reach but don't grasp it
+and call it intangible.
+Three failed means to knowledge
+I weave into one.
+
+Not lit from above,
+casting no shade below.
+Too fine to be named,
+it returns to nothing.
+This is the formless form,
+the immaterial image.
+It is indefinable.
+
+Meeting it, you cannot see its face.
+Following it, you cannot see its back.
+Hold to the ancient Way
+to rule this very realm
+and discover what has always been true.
+
+This is the essence of the Tao.",
+      "The ancient masters sought the unfathomable
+and penetrated the dark.
+Because they cannot be known,
+I describe them with reluctance.
+
+They were careful as if crossing a river in winter
+Cautious as if danger were nearby
+Reserved like a visiting guest
+Yielding like melting ice
+Simple like uncarved wood
+Open like a valley
+Murky like a puddle.
+
+But a puddle becomes clear when it's still.
+And out of stillness, life is roused.
+
+Those who treasure this Way
+don't seek fulfillment.
+Not seeking fulfillment,
+they reside in the dark.",
+      "Let everything be empty,
+and the center be still.
+The ten thousand things rise and fall,
+and we watch them return.
+They grow and flourish,
+returning to the source.
+
+Returning to the source is stillness.
+To be still is to revive.
+To revive is to endure.
+
+Knowing this cycle is wisdom.
+Not knowing is to suffer in vain.
+
+Knowing how to endure is to be all-embracing.
+All-embracing means impartial.
+Impartiality leads to nobility.
+Nobility leads to Heaven.
+Heaven leads to the Tao.
+
+Being at one with the Tao means long life.
+Life without trouble.",
+      "The greatest rulers are barely known.
+The next best are loved and revered.
+Then come those who are feared and respected.
+And finally, those who are despised.
+
+One who does not trust others
+will not be trusted.
+
+Hesitate and guard your words.
+When their work succeeds,
+people will think they did it.",
+      "When the great Tao is forgotten,
+goodness and justice appear.
+When reason appears,
+the great pretense begins.
+
+When kinship falls into discord,
+filial piety and devotion arise.
+When the country is in chaos,
+loyal officials appear.",
+      "Get rid of holiness and wisdom
+and people will live a hundred times better.
+Get rid of kindness and justice
+and people recover piety and devotion.
+Get rid of cleverness and profit
+and thieves will cease to exist.
+
+But these three sayings are not enough.
+Hence let this be added:
+Wear the undyed and hold the uncarved.
+Abolish self-interest and cast off desire.
+Get rid of learning and problems will vanish.",
+      "Yes and no
+aren't so far apart.
+Beautiful and ugly
+aren't so unalike.
+What others fear
+we too must fear.
+What nonsense!
+
+People joyfully feast
+as if they were at the Great Sacrifice,
+or climbing a tower
+to look from a terrace in spring.
+
+I sit here and make no sign,
+like a baby that doesn't smile,
+lost with no one to turn to.
+
+Others have plenty,
+I alone have nothing.
+My mind is so foolish,
+so simple.
+Others are clear and bright,
+I alone am dim.
+Others are sharp and clever,
+I alone am confused.
+
+I drift like the waves of the sea,
+blowing aimlessly like the wind.
+
+Everyone has a purpose.
+I alone am directionless and dumb.
+For I alone choose to differ.
+I drink from the Great Mother's breast.",
+      "The expression of deepest virtue
+comes from the Tao alone.
+
+The Tao in action
+waxes and wanes.
+It waxes and wanes
+but inside is an image.
+It wanes and waxes
+but inside is a form.
+It's deep and dark
+but inside is an essence.
+An essence that is true and real
+and inside that lies faith.
+
+From the very beginning until now
+its name has never changed.
+So we might follow our fathers.
+
+How do we know what our fathers were like?
+Through this.",
+      "Partial means whole.
+Crooked means straight.
+Hollow means full.
+Worn-out means new.
+Less means content.
+More means confused.
+Thus the sage holds onto the One
+to use in guiding the world.
+
+Not watching himself,
+he appears.
+Not displaying himself,
+he flourishes.
+Not flattering himself,
+he succeeds.
+Not parading himself,
+he leads.
+Because he doesn't compete,
+no one can compete against him.
+
+The ancients who said partial means whole
+came close indeed.
+Becoming whole depends on this.",
+      "To talk little is natural.
+A gale doesn't last all morning.
+A squall doesn't last all day.
+Who else could make these?
+Only Heaven and Earth.
+If Heaven and Earth can't make things last,
+what about man?
+
+Thus in whatever you do,
+let those on the Way be one with the Way.
+Let those who succeed be one with success.
+Let those who fail be one with failure.
+
+Be one with success,
+for the Way succeeds too.
+Be one with failure,
+for the Way fails too.",
+      "Who tiptoes doesn't stand.
+Who strides doesn't walk.
+Who watches himself doesn't appear.
+Who displays himself doesn't flourish.
+Who flatters himself doesn't succeed.
+Who parades himself doesn't lead.
+
+On the road they say:
+Too much food and a tiring pace
+do not bring happiness.
+Therefore followers of the Tao avoid them.",
+      "Something featureless yet complete,
+born before Heaven and Earth.
+Silent and formless,
+it stands alone and unchanging.
+Not knowing its name
+I call it the Tao.
+Forced to name it
+I call it great.
+
+Great means boundless.
+Boundless means ever-flowing.
+Ever-flowing means ever-returning.
+
+The Tao is great.
+Heaven is great.
+Earth is great.
+The king is also great.
+The realm consists of four greats,
+and the king is one of them.
+
+Man follows Earth.
+Earth follows Heaven.
+Heaven follows the Tao.
+The Tao follows itself.",
+      "Heavy is the root of light.
+Still is the master of busy.
+
+Therefore the sage might travel all day
+without leaving his heavy baggage cart.
+Even when surrounded by activity
+he remains still and detached.
+
+Why would the lord of ten thousand chariots
+treat himself more lightly than his kingdom?
+If he treats himself lightly
+he will lose touch with his root.
+If he becomes too busy
+he will lose his mastery.",
+      "Good walking leaves no tracks.
+Good talking reveals no flaws.
+Good accounting needs no beads.
+Good doors need no locks,
+yet can't be opened.
+Good binding ties no knots,
+yet can't be undone.
+
+Thus the sage is good at saving people,
+yet abandons no one,
+nor anything of use.
+This is called following the light.
+
+Thus the good are teachers of the bad.
+The bad are students of the good.
+Not honoring their teachers,
+not cherishing their students,
+the wise alone are perfectly blind.
+This is called peering into the mystery.",
+      "Know the male,
+but keep to the female,
+and be a river for the world.
+Being a river for the world,
+you will be led by ancient virtue
+and be born anew.
+
+Know the pure,
+but keep to the impure,
+and be an example for the world.
+Being an example for the world,
+you will be filled with ancient virtue
+and return to boundless freedom.
+
+Know the white,
+but keep to the black,
+and be a guide for the world.
+Being a guide for the world,
+you will keep the ancient virtue
+and return to the uncarved block.
+
+The uncarved block can be split to make tools.
+The sage can work as a state official.
+But a master tailor doesn't cut.",
+      "Trying to control the world using force?
+I see this not succeeding.
+
+The world is sacred.
+It can't be controlled.
+To control it is to ruin it.
+To grasp it is to lose it.
+
+Sometimes leading,
+sometimes following.
+Sometimes breathing hard,
+sometimes breathing easily.
+Sometimes strong,
+sometimes weak.
+Sometimes expanding,
+sometimes collapsing.
+
+Thus the sage avoids extremes,
+avoids excess,
+avoids extravagance.",
+      "In using the Tao to advise a ruler,
+oppose the use of force to control.
+Such methods soon rebound.
+
+Where armies camp,
+brambles grow.
+Best to win and then stop.
+Never take advantage of power.
+
+Win but don't be proud.
+Win but don't boast.
+Win but don't be cruel.
+Win when you have no choice.
+This is called winning without force.
+
+Force leads to decay.
+This isn't the Tao.
+What isn't the Tao ends early.",
+      "Weapons are not auspicious tools.
+All creatures despise them.
+Thus the Taoist shuns them.
+In peace the ruler honors the left.
+In war he honors the right.
+
+Weapons are not auspicious tools.
+They are not a ruler's tools.
+Wielded only when he has no choice.
+Peace and quiet serve best.
+Thus he does not glorify weapons.
+
+One who glorifies weapons
+enjoys killing others.
+One who enjoys killing others
+achieves no worldly rule.
+
+Thus we honor the left for joy
+and the right for sorrow.
+The general stands on the left.
+The commander on the right.
+This means war is conducted like a funeral.
+
+When you kill another,
+honor him with your tears.
+When the battle is won,
+treat it as a wake.",
+      "The Tao has never had a name.
+Though simple and small,
+no one can command it.
+
+If rulers could uphold it,
+the ten thousand things would come together.
+Heaven and Earth would join
+to bestow sweet dew
+without anyone giving the order.
+
+Once the world is divided,
+the distinction gives us names.
+After we have names,
+we should know when to stop.
+One who knows when to stop
+knows no trouble.
+The relationship of the world to the Tao
+is like rivers flowing into the sea.",
+      "Understanding others is wisdom.
+Understanding yourself is enlightenment.
+Conquering others is forceful.
+Conquering yourself is strong.
+Self-contentment is wealth.
+Self-control is success.
+Holding your place is enduring.
+Dying without perishing is living.",
+      "The great Tao flows everywhere,
+to the left and to the right.
+
+The ten thousand things are born from it,
+but it makes no claim.
+When its work succeeds,
+it seeks no recognition.
+
+It nourishes the ten thousand things
+without aspiring to rule.
+Shall we call it small?
+
+The ten thousand things return to it,
+but it wields no control.
+Shall we call it great?
+
+Therefore the sage never acts great.
+Thus he achieves greatness.",
+      "Hold up the great image
+and the world will come
+and be beyond harm,
+resting safely at peace.
+
+Music and fine food
+stop people passing by,
+but words of the Tao
+are bland and tasteless.
+
+We look and don't see it.
+We listen and don't hear it.
+Yet when we use it
+it is inexhaustible.",
+      "What you would shorten
+you should therefore lengthen.
+What you would weaken
+you should therefore strengthen.
+What you would topple
+you should therefore raise.
+What you would take
+you should therefore give.
+This is called hiding the light.
+The weak conquers the strong.
+
+Fish can't survive out of the deep.
+A state's greatest advantage
+is not meant to be shown.",
+      "The Tao does nothing,
+but leaves nothing undone.
+If a ruler could uphold it,
+the ten thousand things would change on their own.
+
+If they still desired to act,
+he could make them still
+with simplicity that has no name.
+
+Stilled by nameless simplicity,
+they would not desire.
+Not desiring,
+they would be at peace,
+and the world would fix itself.",
+      "A man of higher virtue does not insist upon his virtue.
+Thus he is virtuous.
+A man of lower virtue never loses sight of his virtue.
+Thus he is not virtuous.
+
+A man of higher virtue takes no action
+and has no thought of action.
+A man of higher kindness takes action
+but has no thought of action.
+A man of higher justice takes action
+and has the thought of action.
+A man of higher ritual takes action
+but gets no response
+until he threatens and compels them.
+
+When the Way is lost,
+virtue appears.
+When virtue is lost,
+kindness appears.
+When kindness is lost,
+justice appears.
+When justice is lost,
+ritual appears.
+Ritual marks the ending of belief
+and the onset of confusion.
+
+Divination is the flower of the Way
+and the beginning of delusion.
+Thus the great choose essence over appearance,
+the fruit and not the flower.
+Thus they pick this over that.",
+      "Of things that became one in the past:
+Heaven became one and was clear.
+Earth became one and was still.
+Spirits became one and were strong.
+Valleys became one and were full of life.
+Kings became one and were noble.
+
+But in the limit:
+Heaven would shatter if it was always clear.
+Earth would crumble if it was always still.
+Spirits would break if they were always strong.
+Valleys would fail if they were always full.
+Kings would fall if they were always noble.
+
+Thus the noble is based on the humble,
+as the high is founded on the low.
+Thus do kings refer to themselves
+as orphaned, widowed, and destitute.
+Isn't this the basis of humility?
+Thus they count many carriages
+while claiming none at all.
+Not wanting to tinkle like jade,
+they clatter like rocks.",
+      "Returning is the motion of the Tao.
+Yielding is the practice of the Tao.
+The ten thousand things are born of being.
+Being is born from nonbeing.",
+      "When a great person hears of the Way,
+he follows it with devotion.
+When an average person hears of the Way,
+he doesn't know if it's real or not.
+When a foolish person hears of the Way,
+he laughs out loud.
+If he didn't laugh,
+it wouldn't be the Way.
+
+Therefore these sayings arose:
+The brightest path seems dark.
+The quickest path seems slow.
+The smoothest path seems rough.
+The highest virtue seems low.
+The whitest white seems pitch black.
+The greatest virtue seems lacking.
+The staunchest virtue seems apathetic.
+The truest truth seems unsure.
+The perfect square has no corners.
+The perfect vessel is incomplete.
+The perfect sound is silent.
+The perfect form is shapeless.
+
+The Tao is hidden and has no name,
+but because it's the Tao
+it knows how to start and how to finish.",
+      "The Tao gives birth to one.
+One gives birth to two.
+Two gives birth to three.
+Three gives birth to the ten thousand things.
+
+The ten thousand things carry yin on their backs
+and hold yang in their embrace.
+Harmony is found in the breath between them.
+
+What the world hates
+is to be orphaned, widowed, and destitute,
+but kings use these as their titles.
+Thus some gain by losing
+and others lose by gaining.
+
+Thus what other people teach
+I teach as well.
+The tyrant doesn't die a natural death.
+This becomes my teacher.",
+      "The softest thing in the world
+overcomes the hardest.
+What doesn't exist finds room where there is none.
+Thus we know the value of non-action.
+
+Teaching without words,
+succeeding without effort—
+few in the world can realize this.",
+      "Which matters more,
+fame or health?
+Which is more precious,
+health or wealth?
+Which is more harmful,
+gain or loss?
+
+The deeper the love,
+the higher the cost.
+The bigger the treasure,
+the greater the loss.
+He who knows contentment
+suffers no disgrace.
+He who knows restraint
+encounters no trouble
+and thus lives long.",
+      "Great accomplishment seems incomplete,
+yet it works without fail.
+The fullest thing seems empty,
+yet it cannot be exhausted.
+
+The straightest thing seems crooked.
+The cleverest thing seems clumsy.
+The richest thing seems poor.
+
+Activity conquers cold.
+Stillness conquers heat.
+He who can be perfectly still
+is able to rule the world.",
+      "When the Tao prevails,
+swift horses are used to manure fields.
+When the Tao is lost,
+war horses are raised on the border.
+
+No crime is worse than yielding to desire.
+No disaster is greater than discontent.
+No curse is crueler than getting what you want.
+Therefore being content with what you have
+is true contentment indeed.",
+      "Without going out the door,
+one may know the whole world.
+Without looking out the window,
+one may know the Way of Heaven.
+The farther people go,
+the less they know.
+
+Thus the sage knows without moving,
+names without looking,
+succeeds without trying.",
+      "Those who seek to learn gain every day.
+Those who seek the Way lose every day.
+
+They lose and lose
+until they find nothing left to do.
+Nothing to do means nothing undone.
+
+He who rules the world isn't busy.
+If someone is busy,
+he can't rule the world.",
+      "The sage has no mind of his own.
+His mind is the mind of the people.
+
+To the good he is good.
+To the bad he is good.
+Thus is virtue attained.
+To the true he is true.
+To the false he is true.
+Thus is honesty attained.
+
+The sage is humble and withdrawn.
+To the world he seems confusing.
+People open their eyes and ears to him,
+and he acts like a little child.",
+      "Appearing into life.
+Disappearing into death.
+Three in ten are followers of life.
+Three in ten are followers of death.
+And people living to live
+also number three in ten
+and are led to the land of death.
+Why is this so?
+Because they cling to life.
+
+It's said that those who guard life well
+do not avoid rhinos or tigers
+and will not be injured in battle.
+For rhinos have nowhere to thrust their horn,
+tigers have nowhere to sink their claws,
+and soldiers have nowhere to bury their blades.
+Why is this so?
+Because for them there is no land of death.",
+      "The Way begets them
+and virtue keeps them.
+Matter forms them
+and usage completes them.
+Thus the ten thousand things honor the Way and glorify virtue.
+Honor of the Way and glory of virtue
+are not bestowed
+but are always available.
+
+The Way begets and keeps them,
+cultivates and trains them,
+shelters and protects them,
+nurtures and sustains them.
+
+Create without possessing.
+Act without expecting.
+Rule without controlling.
+This is called Dark Virtue.",
+      "The ten thousand things have an origin
+that may be called the world's mother.
+One who knows the mother
+also knows the children.
+One who knows the children
+keeps the mother safe
+and lives without trouble.
+
+One who blocks the opening
+One who closes the gate
+Lives without toil.
+One who unblocks the opening
+One who meddles in affairs
+Lives without hope.
+
+One who sees the small has vision.
+One who abides in softness has strength.
+One who uses his light,
+one who trusts his vision,
+lives without death.
+This is called following eternity.",
+      "If I had the slightest sense
+I would follow the Great Way
+and my only fear would be to go astray.
+The Great Way is smooth,
+but people love the scenic route.
+
+The palaces are empty,
+the fields are overgrown
+and the granaries are bare.
+They wear fine clothes,
+they carry sharp swords,
+they indulge in food and drink
+and possess more than they need.
+This is called robbery,
+and robbery is not the Way.",
+      "What is firmly planted is not uprooted.
+What is held tight is not ripped away.
+Future generations will honor it forever.
+
+Cultivated in the self,
+virtue becomes real.
+Cultivated in the family,
+virtue abounds.
+Cultivated in the village,
+virtue grows.
+Cultivated in the state,
+virtue prospers.
+Cultivated in the world,
+virtue prevails.
+
+Therefore view the self through the self.
+View the family through the family.
+View the village through the village.
+View the state through the state.
+View the world through the world.
+
+How do we know what the world is like?
+Through this.",
+      "He who embodies virtue
+is like a newborn child.
+
+Wasps and scorpions won't sting him.
+Spiders and snakes won't bite him.
+Birds and beasts won't claw him.
+
+His bones are weak.
+His sinews are soft.
+And yet his grip is firm.
+He hasn't known the union of sexes,
+and yet his penis is hard.
+He is so full of essence
+that he cries all day without becoming hoarse.
+He is in perfect harmony.
+
+Knowing harmony is knowing eternity.
+Knowing eternity is called enlightenment.
+
+Who lengthens his life tempts luck.
+Who controls his breath uses force.
+Force leads to decay.
+This isn't the Way.
+What isn't the Way ends early.",
+      "Those who know don't talk.
+Those who talk don't know.
+
+Seal the opening.
+Close the gate.
+Dull the edge.
+Untie the knot.
+Soften the light.
+Join the dust.
+This is called Dark Virtue.
+
+It can't be embraced.
+It can't be abandoned.
+It can't be helped.
+It can't be harmed.
+It can't be exalted.
+It can't be debased.
+Thus does the world honor it.",
+      "Use direction to rule a country.
+Use indirection to fight a war.
+Use inaction to rule the world.
+How do I know this is so?
+
+The greater the restrictions,
+the poorer the people.
+The sharper the weapons,
+the darker the realm.
+The smarter the scheme,
+the stranger the outcome.
+The finer the treasure,
+the thicker the thieves.
+
+Thus the sage declares:
+I change nothing
+and the people transform themselves.
+I stay still
+and the people align themselves.
+I do nothing
+and the people enrich themselves.
+I want nothing
+and the people simplify themselves.",
+      "When the government does little,
+the people are honest.
+When the government imposes,
+the people are cunning.
+
+Happiness is rooted in misery.
+Misery lurks beneath happiness.
+Who knows where they end?
+
+There is no direction.
+Direction turns into indirection.
+Goodness becomes evil.
+The people have been deluded
+for a long time.
+
+Thus the sage is sharp but not cutting,
+pointed but not piercing,
+straightforward but not overextended,
+bright but not blinding.",
+      "In ruling people and serving Heaven,
+nothing surpasses austerity.
+Austerity means planning ahead.
+Planning ahead means accumulating virtue.
+Accumulating virtue means overcoming everything.
+Overcoming everything means knowing no limits.
+Knowing no limits means ruling the kingdom.
+Ruling the kingdom means living long.
+This means deep roots and a thick trunk,
+the Way of long and lasting life.",
+      "Ruling a great kingdom
+is like cooking a small fish.
+
+When you govern the world with the Tao,
+spirits display no powers.
+Not that they have no power,
+but their powers do people no harm.
+Not that their powers can do people no harm,
+but the sage protects them.
+
+Neither harms the other,
+so both accumulate virtue.",
+      "A great state is like a river basin.
+The confluence of the world,
+embodying the female.
+
+The female overcomes the male through stillness.
+In order to be still,
+she needs to lower herself.
+
+Thus the great state that lowers itself
+rules the small state.
+The small state that lowers itself
+is ruled by the great state.
+Some lower themselves to rule.
+Some lower themselves to be ruled.
+
+The great state's only desire
+is to unite and lead others.
+The small state's only desire
+is to join and serve others.
+For both to achieve their desire,
+the greater must be lower.",
+      "The Tao is the source of the ten thousand things.
+The treasure of the good
+The refuge of the bad.
+
+Beautiful words can be traded.
+Noble deeds can be gifted.
+How can we abandon people who are bad?
+Thus when emperors are enthroned
+or three ministers installed,
+though there be great discs of jade
+followed by teams of horses,
+they don't rival one who sits
+and offers up the Tao.
+
+Why did the ancients treasure it?
+Did they not say:
+\"Who seeks shall thereby find;
+who errs shall thereby be forgiven\"?
+Thus the world treasures it.",
+      "Act without acting.
+Work without working.
+Taste without tasting.
+The great are small.
+The many are few.
+Repay each wrong with virtue.
+
+Plan for the hard while it's easy.
+Work on the great while it's small.
+The hardest task in the world begins easy.
+The greatest goal in the world begins small.
+Thus the sage never acts great.
+He thus achieves great things.
+
+One who promises often is seldom trusted.
+One who makes things easy will encounter much hardship.
+Therefore the sage makes everything hard.
+He thus finds nothing hard.",
+      "It's easy to rule while it's peaceful.
+It's easy to prevent before it's trouble.
+It's easy to break while it's fragile.
+It's easy to disperse while it's small.
+
+Act before it exists.
+Rule before it rebels.
+
+A great tree grows from the tiniest shoot.
+A giant tower rises from a basket of dirt.
+A thousand-mile journey begins at your feet.
+
+To act is to fail.
+To control is to lose.
+Therefore the sage doesn't act,
+thus he doesn't fail.
+He doesn't control,
+thus he doesn't lose.
+
+In pursuing a task,
+people usually fail near the end.
+Caring at the end as at the start
+puts an end to failure.
+
+Thus the sage desires no desire.
+He doesn't prize what's hard to obtain.
+He learns to not learn.
+He attends to what others pass by.
+To help the ten thousand things find their nature,
+he thus dares not to act.",
+      "The ancient masters of the Way
+did not use it to enlighten
+but to keep people in the dark.
+What makes people hard to rule
+is that they have too much knowledge.
+One who rules with knowledge
+spreads evil in the realm.
+One who rules without knowledge
+spreads virtue in the realm.
+One who understands these two
+understands the universal key.
+This is called Dark Virtue.
+Dark Virtue goes deep,
+goes far,
+goes the other way,
+until it reaches perfect harmony.",
+      "The sea can rule a hundred rivers
+because it lies below them.
+
+Thus if the sage would be above the people,
+he should speak as if he were below them.
+If he would stand in front of them,
+he should act as if he were behind them.
+Thus when the sage is above,
+the people are not oppressed.
+When he is in front,
+the people are not hindered.
+The world will support and encourage him without wearying.
+
+Because he doesn't contend,
+no one can contend with him.",
+      "The world calls me great.
+Great but useless.
+Because I am great I am useless.
+If I were of use,
+I would have stayed small.
+
+But I possess three treasures
+that I guard and cherish.
+The first is compassion.
+The second is austerity.
+The third is reluctance to excel.
+
+Because I am compassionate,
+I can be valiant.
+Because I am austere,
+I can be extravagant.
+Because I am reluctant to excel,
+I can be supreme.
+
+If I renounced compassion for valor,
+austerity for extravagance,
+reluctance for supremacy,
+I would die.
+
+Compassion wins every battle
+and outlasts every attack.
+What Heaven creates,
+compassion protects.",
+      "In ancient times:
+The perfect officer wasn't armed.
+The perfect warrior wasn't angry.
+The perfect conqueror wasn't hostile.
+The perfect commander was humble.
+
+This is called the virtue of not contending.
+This is called using the strength of others.
+This is called uniting with Heaven,
+which was the ancient goal.",
+      "In warfare there is a saying:
+Rather than a host,
+better to be a guest.
+Rather than advance an inch,
+better to retreat a foot.
+
+This means forming no column,
+wearing no armor,
+brandishing no weapon,
+repulsing no enemy.
+
+No fate is worse than to make light of an enemy.
+Making light of an enemy means losing a treasure.
+Thus when opponents are evenly matched,
+the remorseful one prevails.",
+      "My words are easy to understand,
+easy to employ.
+But since no one can understand them,
+no one can employ them.
+
+Words have an ancestor.
+Deeds have an ancestor.
+
+Because they have no understanding,
+people fail to understand me.
+Rare are they who understand me.
+Thus I am exalted.
+
+Therefore the sage wears coarse cloth
+and keeps his jade inside.",
+      "To realize that you do not understand
+is transcendence.
+Not to realize that you do not understand
+is an affliction.
+The reason the sage is not afflicted
+is because he treats affliction as affliction.
+Hence he is not afflicted.",
+      "When people no longer fear power,
+a greater power will appear.
+
+Don't restrict where people dwell.
+Don't repress how people live.
+If they aren't oppressed,
+they won't protest.
+
+Thus the sage knows himself
+but doesn't reveal himself.
+He loves himself
+but doesn't exalt himself.
+Thus he picks this over that.",
+      "Daring to act means death.
+Daring not to act means life.
+Of these two,
+one benefits,
+one harms.
+
+Who knows the reason
+for Heaven's dislikes?
+The Way of Heaven
+wins easily without a fight,
+answers wisely without a word,
+comes quickly without a summons,
+plans ingeniously without a thought.
+
+The Net of Heaven is all-embracing.
+Its mesh is wide but nothing escapes.",
+      "If people no longer fear death,
+why do we threaten to kill them?
+
+And if others fear death,
+and still act perverse,
+and we catch and kill them,
+who else will dare?
+
+As long as people fear death,
+the executioner will exist.
+To kill in the executioner's place
+is to take the carpenter's place.
+Who takes the carpenter's place
+is bound to hurt his hands.",
+      "The reason people are hungry
+is because those above levy so many taxes.
+Thus the people are hungry.
+
+The reason people are hard to rule
+is because those above are so forceful.
+Thus the people are hard to rule.
+
+The reason people think little of death
+is because those above think so much of life.
+Thus the people think little of death.
+
+Meanwhile those who do not pursue life
+are more esteemed than those who love life.",
+      "When people are born,
+they are soft and supple.
+When they perish,
+they are hard and stiff.
+When plants shoot forth,
+they are soft and tender.
+When they die,
+they are withered and dry.
+
+Thus it is said:
+The hard and strong are followers of death.
+The soft and weak are followers of life.
+
+When an army becomes strong it suffers defeat.
+When a plant becomes hard it snaps.
+
+The hard and the strong dwell below.
+The soft and the weak dwell above.",
+      "The Way of Heaven
+is like stringing a bow.
+Pulling down the high,
+lifting up the low.
+Shortening the long,
+lengthening the short.
+
+The Way of Heaven
+takes from the long
+and supplements the short.
+Unlike the way of man,
+taking from the short
+and giving to the long.
+
+Who can find the long
+and give it to the world?
+Only those who find the Way.
+
+Thus the sage
+acts without expecting,
+achieves without claiming.
+Thus he chooses to hide his skill.",
+      "Nothing in the world is weaker than water.
+But against the hard and the strong,
+nothing can beat it,
+for nothing can change it.
+
+The soft overcomes the hard.
+The weak overcomes the strong.
+
+This is something everyone knows,
+but no one is able to practice.
+
+Thus the sage declares:
+One who accepts a country's disgrace
+we call the lord of soil and grain.
+One who accepts a country's misfortune
+we call the king of all under Heaven.
+Upright words sound upside down.",
+      "In resolving a great dispute,
+some resentment is bound to remain.
+How can this be good?
+
+Thus the sage honors his word
+and makes no claim on others.
+Thus the virtuous mind what they owe
+and the virtueless mind what they deserve.
+
+The Way of Heaven is impartial,
+but always helps the good.",
+      "Imagine a small state with few people.
+Let there be labor-saving tools,
+but no need to use them.
+Let people consider death,
+but not travel far.
+Let there be boats and carts,
+but no reason to ride them.
+Let there be armor and weapons,
+but no reason to employ them.
+
+Let people return to tying knots to keep records.
+Satisfied with their food,
+pleased with their clothing,
+content with their homes,
+and happy with their customs.
+
+Let there be a state so near,
+people can hear its dogs and chickens,
+but live out their lives
+without ever paying a visit.",
+      "True words aren't beautiful.
+Beautiful words aren't true.
+The good aren't eloquent.
+The eloquent aren't good.
+The wise aren't learned.
+The learned aren't wise.
+
+The sage accumulates nothing,
+but the more he does for others,
+the greater his existence.
+The more he gives to others,
+the greater his abundance.
+
+The Way of Heaven
+is to help without harming.
+The Way of the Sage
+is to act without contending."
     ];
 
     // -1 = intro, 0-80 = verses 1-81
@@ -426,6 +1773,8 @@
     const settingsBtn = document.getElementById('settings');
     const modal = document.getElementById('modal');
     const modalClose = document.getElementById('modal-close');
+    const versePicker = document.getElementById('versePicker');
+    const verseInput = document.getElementById('verseInput');
 
     function showPage(index) {
       currentIndex = index;
@@ -434,12 +1783,14 @@
       if (index === -1) {
         // Introduction page
         headerEl.textContent = 'Introduction';
+        headerEl.classList.remove('tappable');
         contentEl.innerHTML = introContent.html;
         prevBtn.disabled = true;
         homeBtn.disabled = true;
       } else {
         // Verse page
         headerEl.textContent = `Verse ${index + 1} of 81`;
+        headerEl.classList.add('tappable');
         contentEl.innerHTML = '';
         contentEl.textContent = verses[index];
         prevBtn.disabled = false;
@@ -491,7 +1842,40 @@
       if (e.target === modal) closeSettings();
     });
 
+    // Verse picker
+    function openVersePicker() {
+      if (currentIndex === -1) return;
+      verseInput.value = '';
+      versePicker.classList.add('active');
+      setTimeout(() => verseInput.focus(), 50);
+    }
+
+    function closeVersePicker() {
+      versePicker.classList.remove('active');
+      verseInput.blur();
+    }
+
+    function goToVerse() {
+      const num = parseInt(verseInput.value, 10);
+      if (num >= 1 && num <= 81) {
+        showPage(num - 1);
+        closeVersePicker();
+      }
+    }
+
+    headerEl.addEventListener('click', openVersePicker);
+    verseInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') goToVerse();
+      if (e.key === 'Escape') closeVersePicker();
+    });
+    versePicker.addEventListener('click', (e) => {
+      if (e.target === versePicker) closeVersePicker();
+    });
+
     document.addEventListener('keydown', (e) => {
+      if (versePicker.classList.contains('active')) {
+        return;
+      }
       if (modal.classList.contains('active')) {
         if (e.key === 'Escape') closeSettings();
         return;
@@ -501,6 +1885,7 @@
       if (e.key === ' ' || e.key === 'r') { e.preventDefault(); randomVerse(); }
       if (e.key === 'h') goHome();
       if (e.key === 's') openSettings();
+      if (e.key === 'g') openVersePicker();
     });
 
     // Startup logic
