@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tao-v2';
+const CACHE_NAME = 'tao-v3';
 const urlsToCache = [
   '/',
   '/index.html',
